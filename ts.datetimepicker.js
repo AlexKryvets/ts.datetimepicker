@@ -131,6 +131,7 @@
                     $scope.day.values = range(1, newValue);
                     if (newValue < $scope.day.value) {
                         $scope.day.value = newValue;
+                        animate($scope.day.$element, getCoordinateByValue($scope.day.$element, newValue), Math.abs(newValue - oldValue) * 0.1);
                     }
                 });
 
