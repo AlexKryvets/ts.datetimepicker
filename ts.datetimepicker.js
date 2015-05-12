@@ -99,7 +99,8 @@
             restrict: 'E',
             replace: true,
             scope: {
-                dateProperty: '=tsDatetimePickerDateProperty',
+                scope: '=tsDatetimePickerScope',
+                date: '=tsDatetimePickerDate',
                 show: '=tsDatetimePickerShow'
             },
             templateUrl: 'template/ts.datetimepicker.html',
@@ -133,8 +134,8 @@
                     }
                 });
 
-                $scope.$watch('dateProperty', function () {
-                    var newDate = $parse($scope.dateProperty)($scope.$parent);
+                $scope.$watch('date', function () {
+                    var newDate = $parse($scope.date)($scope.scope);
                     if (newDate instanceof Date) {
                         date = newDate;
                     }
@@ -167,7 +168,7 @@
 
                 $scope.onSetClick = function () {
                     date = new Date($scope.year.value, $scope.month.value, $scope.day.value, $scope.hour.value, $scope.minute.value);
-                    $parse($scope.dateProperty).assign($scope.$parent, date);
+                    $parse($scope.date).assign($scope.scope, date);
                     $scope.show = false;
                 };
 
