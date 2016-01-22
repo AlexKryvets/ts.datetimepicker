@@ -2,7 +2,7 @@
 
     'use strict';
 
-    angular.module('ts.datetimePicker', ['ts.pointerEventsNone']).directive('tsDatetimePicker', ['$parse', 'dateFilter', function ($parse, dateFilter) {
+    angular.module('ts.datetimePicker', ['ts.pointerEventsNone']).directive('tsDatetimePicker', ['$parse', "$timeout", 'dateFilter', function ($parse, $timeout, dateFilter) {
 
         var minYear = 2000;
         var maxYear = 2020;
@@ -105,7 +105,7 @@
             },
             templateUrl: 'template/ts.datetimepicker.html',
             link: function ($scope, $element, $attributes) {
-                var date = new Date;
+                var date = null;
 
                 $scope.day = {};
                 $scope.day.values = [];
@@ -135,23 +135,27 @@
                     }
                 });
 
-                $scope.$watch('date', function () {
-                    var newDate = $parse($scope.date)($scope.scope);
-                    if (newDate instanceof Date) {
-                        date = newDate;
+                $scope.$watch('show', function (newValue) {
+                    if (newValue) {
+                        var newDate = $parse($scope.date)($scope.scope);
+                        if (newDate instanceof Date) {
+                            date = newDate;
+                        } else {
+                            date = new Date;
+                        }
+                        $scope.year.value = date.getFullYear();
+                        $scope.month.value = date.getMonth();
+                        $scope.day.value = date.getDate();
+                        $scope.hour.value = date.getHours();
+                        $scope.minute.value = date.getMinutes();
+                        $timeout(function (){
+                            animate($scope.year.$element, getCoordinateByValue($scope.year.$element, $scope.year.value));
+                            animate($scope.month.$element, getCoordinateByValue($scope.month.$element, $scope.month.value));
+                            animate($scope.day.$element, getCoordinateByValue($scope.day.$element, $scope.day.value));
+                            animate($scope.hour.$element, getCoordinateByValue($scope.hour.$element, $scope.hour.value));
+                            animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value));
+                        });
                     }
-
-                    $scope.day.value = date.getDate();
-                    $scope.month.value = date.getMonth();
-                    $scope.year.value = date.getFullYear();
-                    $scope.hour.value = date.getHours();
-                    $scope.minute.value = date.getMinutes();
-
-                    animate($scope.year.$element, getCoordinateByValue($scope.year.$element, $scope.year.value));
-                    animate($scope.month.$element, getCoordinateByValue($scope.month.$element, $scope.month.value));
-                    animate($scope.day.$element, getCoordinateByValue($scope.day.$element, $scope.day.value));
-                    animate($scope.hour.$element, getCoordinateByValue($scope.hour.$element, $scope.hour.value));
-                    animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value));
                 });
 
                 $scope.$watch('year.value', function (newValue, oldValue) {
