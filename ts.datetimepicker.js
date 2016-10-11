@@ -42,7 +42,7 @@
                 touches[0].originalEvent || touches[0];
 
             return e.clientY;
-        }
+        };
 
         var bindEvents = function ($scope, fieldName) {
             var active = false;
