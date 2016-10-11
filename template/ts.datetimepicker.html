@@ -4,6 +4,9 @@
             <div class="modal-dialog modal-sm">
                 <div class="modal-content clearfix">
                     <div class="dp">
+                        <div class="dp-header">
+                            <h4>{{'DATE_AND_TIME' | translate}}</h4>
+                        </div>
                         <div class="dp-widget dp-widget-date">
                             <div class="dp-column dp-column-year">
                                 <div class="dp-ul-wrapper">
@@ -60,12 +63,8 @@
                             </div>
                         </div>
                         <div class="dp-footer">
-                            <button type="button" class="btn btn-default btn-sm" ng-click="onCancelClick()">
-                                Cancel
-                            </button>
-                            <button type="button" class="btn btn-default btn-sm" ng-click="onSetClick()">
-                                Set
-                            </button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="onCancelClick()">{{'CANCEL' | translate}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" ng-click="onSetClick()">{{'OK' | translate}}</button>
                         </div>
                     </div>
                     <div class="modal-background" pointer-events-none></div>
