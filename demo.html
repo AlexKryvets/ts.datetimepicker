@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Datepicker</title>
+    <link rel="stylesheet" href="./ts.datetimepicker.css">
+    <script src="https://unpkg.com/jquery@3.1.1"></script>
+    <script src="https://unpkg.com/angular@1.5.*/angular.js"></script>
+    <script src="https://rawgit.com/AlexKryvets/ts.pointereventsnone/master/ts.pointereventsnone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.6.1/angular-translate.js"></script>
+    <script src="./ts.datetimepicker.js"></script>
+</head>
+<body ng-controller="DemoController">
+<button ng-click="openDateTimePicker(this, 'date')">DatePicker</button>
+<input type="text" ng-model="date" readonly />
+<ts-datetime-picker
+        ts-datetime-picker-show="dateTimePicker.show"
+        ts-datetime-picker-scope="dateTimePicker.scope"
+        ts-datetime-picker-date="dateTimePicker.date"
+></ts-datetime-picker>
+<script>
+    angular.module('demo', ['ts.datetimePicker','pascalprecht.translate']);
+    angular.module('demo').controller('DemoController', function($scope) {
+
+        $scope.date = new Date();
+
+        $scope.dateTimePicker = {
+            show: false,
+            scope: null,
+            date: null
+        };
+
+        $scope.openDateTimePicker = function (scope, date) {
+            $scope.dateTimePicker.scope = scope;
+            $scope.dateTimePicker.date = date;
+            $scope.dateTimePicker.show = true;
+        };
+    });
+
+    angular.bootstrap(document, ['demo']);
+</script>
+</body>
+</html>
