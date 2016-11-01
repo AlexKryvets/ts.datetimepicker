@@ -2,8 +2,12 @@
 
     'use strict';
 
-    angular.module('ts.datetimePicker', ['ts.pointerEventsNone']).directive('tsDatetimePicker', ['$parse', "$timeout", 'dateFilter', function ($parse, $timeout, dateFilter) {
+    angular.module('ts.datetimePicker', ['ts.pointerEventsNone'])
+    angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
 
+    DatetimePickerController.$inject = ['$parse', '$timeout'];
+
+    function DatetimePickerController ($parse, $timeout) {
         var minYear = 2000;
         var maxYear = 2020;
         var HEIGHT = 40;
@@ -97,7 +101,6 @@
 
         return {
             restrict: 'E',
-            replace: true,
             scope: {
                 scope: '=tsDatetimePickerScope',
                 date: '=tsDatetimePickerDate',
@@ -192,6 +195,6 @@
                 };
             }
         };
-    }]);
+    }
 
 })(window, window.angular);
