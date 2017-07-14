@@ -1,0 +1,19 @@
+{
+  "name": "ts.datetimepicker",
+  "version": "0.0.5",
+  "description": "ts.datetimepicker",
+  "main": "ts.datetimepicker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexKryvets/ts.datetimepicker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexKryvets/ts.datetimepicker/issues"
+  },
+  "homepage": "https://github.com/AlexKryvets/ts.datetimepicker#readme"
+}
