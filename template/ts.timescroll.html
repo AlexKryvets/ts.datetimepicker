@@ -1,0 +1,22 @@
+<div class="dp-widget dp-widget-time">
+    <div class="dp-column dp-column-hour">
+        <div class="dp-ul-wrapper">
+            <div class="dp-ul">
+                <div ng-repeat="hour in hour.values" data-value="{{ hour }}">
+                    {{ hour < 10 ? '0' + hour : hour }}
+                </div>
+            </div>
+        </div>
+        <div class="dp-selected"></div>
+    </div>
+    <div class="dp-column dp-column-minute">
+        <div class="dp-ul-wrapper">
+            <div class="dp-ul">
+                <div ng-repeat="minute in minute.values" data-value="{{ minute }}">
+                    {{ minute < 10 ? '0' + minute : minute }}
+                </div>
+            </div>
+        </div>
+        <div class="dp-selected"></div>
+    </div>
+</div>
