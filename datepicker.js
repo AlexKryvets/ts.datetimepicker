@@ -17,12 +17,12 @@ var Datepicker = (function () {
     }
 
     function buildDay(node) {
-        var _this = this
-            , firstDay = new Date(this.selectedDate)
-            , currentDay = new Date(this.selectedDate)
-            , data = node['data']
-            , cssClass = 'days-cell'
-            , offset, index;
+        var _this = this;
+        var firstDay = new Date(this.selectedDate);
+        var currentDay = new Date(this.selectedDate);
+        var data = node['data'];
+        var cssClass = 'days-cell';
+        var index;
 
         firstDay.setDate(1);
         index = (data.col + 1 + (data.row * DAYS_A_WEEK)) - firstDay.getDay();
@@ -202,8 +202,8 @@ var Datepicker = (function () {
         /* Increase by one if no amount is passed. */
         amount = amount || 1;
 
-        var month = this.selectedDate.getMonth()
-            , newDate = new Date(this.selectedDate);
+        var month = this.selectedDate.getMonth();
+        var newDate = new Date(this.selectedDate);
 
         newDate.setMonth(month + amount);
 
@@ -245,7 +245,7 @@ var Datepicker = (function () {
 
         /* Remove from DOM. */
         this.container.parentNode.removeChild(this.container);
-        ;
+        
         /* Destroy reference to invisible DOM element. */
         this.container = null;
 
