@@ -270,7 +270,8 @@
             controller: DirectiveController,
             replace: true,
             restrict: 'E',
-            scope: {}
+            scope: {},
+            template: '<div class="datepicker"></div>'
         };
 
         return directive;
@@ -278,7 +279,11 @@
         DirectiveController.$inject = ['$scope', '$element', '$attrs'];
 
         function DirectiveController($scope, $element, $attrs) {
-
+            var datePicker = new DatePicker($element[0], {
+                onDateChanged: function (newDate) {
+                    console.log(newDate)
+                }
+            });
         }
     }
 

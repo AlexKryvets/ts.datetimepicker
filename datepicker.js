@@ -1,4 +1,4 @@
-var Datepicker = (function () {
+var DatePicker = (function () {
 
     var DAYS_A_WEEK = 7;
     var MAX_WEEKS_IN_MONTH = 6
@@ -117,7 +117,7 @@ var Datepicker = (function () {
         return _destroy(node);
     }
 
-    function Datepicker(element, options) {
+    function DatePicker(element, options) {
         var _this = this;
 
         options = options || {};
@@ -186,7 +186,7 @@ var Datepicker = (function () {
             }
         }
 
-        /* Link DOM element with Datepicker instance. */
+        /* Link DOM element with DatePicker instance. */
         this.container.datepicker = this;
 
         /* Initialize selected date */
@@ -198,7 +198,7 @@ var Datepicker = (function () {
         }
     }
 
-    Datepicker.prototype.increaseMonth = function (amount) {
+    DatePicker.prototype.increaseMonth = function (amount) {
         /* Increase by one if no amount is passed. */
         amount = amount || 1;
 
@@ -210,11 +210,11 @@ var Datepicker = (function () {
         return this.setSelectedDate(newDate);
     };
 
-    Datepicker.prototype.decreaseMonth = function (amount) {
+    DatePicker.prototype.decreaseMonth = function (amount) {
         return this.increasetMonth((amount * -1));
     };
 
-    Datepicker.prototype.setSelectedDate = function (date, suppressCallback) {
+    DatePicker.prototype.setSelectedDate = function (date, suppressCallback) {
         /* Throw error if no date is passed */
         if (!date || (!!this.selectedDate && this.selectedDate.getTime() === date.getTime())) {
             return;
@@ -229,7 +229,7 @@ var Datepicker = (function () {
         return this.selectedDate;
     };
 
-    Datepicker.prototype.build = function () {
+    DatePicker.prototype.build = function () {
         /* Build one by one */
         for (var i = 0, max = this.elements.length; i < max; i++) {
             this.container.appendChild(buildNode.call(this, this.elements[i]));
@@ -238,7 +238,7 @@ var Datepicker = (function () {
         return this.container;
     };
 
-    Datepicker.prototype.destroy = function () {
+    DatePicker.prototype.destroy = function () {
         for (var i = 0, max = this.elements.length; i < max; i++) {
             destroyNode.call(this, this.elements[i]);
         }
@@ -252,6 +252,6 @@ var Datepicker = (function () {
         return this.selectedDate;
     };
 
-    return Datepicker;
+    return DatePicker;
 
 }());
