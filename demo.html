@@ -19,13 +19,9 @@
 </head>
 <body ng-controller="AppController">
 
-<div id="datepicker"></div>
-
-<ts-datetime-picker style="top: 100px"
-                    ts-datetime-picker-show="dateTimePicker.show"
-                    ts-datetime-picker-scope="dateTimePicker.scope"
-                    ts-datetime-picker-date="dateTimePicker.date"
-></ts-datetime-picker>
+<button ng-click="openDateTimePicker(this, 'date')">DatePicker</button>
+<input type="text" ng-model="date" readonly />
+<ts-datetime-picker ts-datetime-picker="dateTimePicker"></ts-datetime-picker>
 
 <script>
     angular.module("app", [
@@ -34,10 +30,19 @@
     angular.module("app").controller('AppController', AppController);
 
     function AppController ($scope) {
+        $scope.date = new Date();
+
         $scope.dateTimePicker = {
-            show: true,
-            scope: $scope,
+            show: false,
+            showTime: false,
+            scope: null,
             date: null
+        };
+
+        $scope.openDateTimePicker = function (scope, date) {
+            $scope.dateTimePicker.scope = scope;
+            $scope.dateTimePicker.date = date;
+            $scope.dateTimePicker.show = true;
         };
     }
 

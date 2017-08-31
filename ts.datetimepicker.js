@@ -102,9 +102,10 @@
         return {
             restrict: 'E',
             scope: {
+                tsDatetimePicker: '=',
                 scope: '=tsDatetimePickerScope',
                 date: '=tsDatetimePickerDate',
-                show: '=tsDatetimePickerShow'
+                // show: '=tsDatetimePickerShow'
             },
             templateUrl: 'template/ts.datetimepicker.html',
             link: function ($scope, $element, $attributes) {
@@ -138,9 +139,9 @@
                     }
                 });
 
-                $scope.$watch('show', function (newValue) {
+                $scope.$watch('tsDatetimePicker.show', function (newValue) {
                     if (newValue) {
-                        var newDate = $parse($scope.date)($scope.scope);
+                        var newDate = $parse($scope.tsDatetimePicker.date)($scope.tsDatetimePicker.scope);
                         if (newDate instanceof Date) {
                             date = newDate;
                         } else {
@@ -175,9 +176,13 @@
                 bindEvents($scope, 'minute');
 
                 $scope.onSetClick = function () {
-                    date = new Date($scope.year.value, $scope.month.value, $scope.day.value, $scope.hour.value, $scope.minute.value);
-                    $parse($scope.date).assign($scope.scope, date);
-                    $scope.show = false;
+                    if ($scope.tsDatetimePicker.showTime) {
+                        var date = new Date($scope.year.value, $scope.month.value, $scope.day.value, $scope.hour.value, $scope.minute.value);
+                    } else {
+                        var date = new Date($scope.year.value, $scope.month.value, $scope.day.value);
+                    }
+                    $parse($scope.tsDatetimePicker.date).assign($scope.tsDatetimePicker.scope, date);
+                    $scope.tsDatetimePicker.show = false;
                 };
 
                 $scope.onCancelClick = function () {
@@ -191,7 +196,7 @@
                     animate($scope.day.$element, getCoordinateByValue($scope.day.$element, $scope.day.value));
                     animate($scope.hour.$element, getCoordinateByValue($scope.hour.$element, $scope.hour.value));
                     animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value));
-                    $scope.show = false;
+                    $scope.tsDatetimePicker.show = false;
                 };
             }
         };

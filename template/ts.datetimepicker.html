@@ -1,4 +1,4 @@
-<div ng-show="show" class="modal" pointer-events-none>
+<div ng-show="tsDatetimePicker.show" class="modal" pointer-events-none>
     <div class="vertical-align">
         <div>
             <div class="modal-dialog modal-sm">
@@ -38,29 +38,31 @@
                                 <div class="dp-selected"></div>
                             </div>
                         </div>
-                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        <div ng-show="tsDatetimePicker.showTime">
+                            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 
-                        <div class="dp-widget dp-widget-time">
-                            <div class="dp-column dp-column-hour">
-                                <div class="dp-ul-wrapper">
-                                    <div class="dp-ul">
-                                        <div ng-repeat="hour in hour.values" data-value="{{ hour }}">
-                                            {{ hour < 10 ? '0' + hour : hour }}
+                            <div class="dp-widget dp-widget-time">
+                                <div class="dp-column dp-column-hour">
+                                    <div class="dp-ul-wrapper">
+                                        <div class="dp-ul">
+                                            <div ng-repeat="hour in hour.values" data-value="{{ hour }}">
+                                                {{ hour < 10 ? '0' + hour : hour }}
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="dp-selected"></div>
                                 </div>
-                                <div class="dp-selected"></div>
-                            </div>
-                            <div class="dp-column dp-column-minute">
-                                <div class="dp-ul-wrapper">
-                                    <div class="dp-ul">
-                                        <div ng-repeat="minute in minute.values" data-value="{{ minute }}">
-                                            {{ minute < 10 ? '0' + minute : minute }}
+                                <div class="dp-column dp-column-minute">
+                                    <div class="dp-ul-wrapper">
+                                        <div class="dp-ul">
+                                            <div ng-repeat="minute in minute.values" data-value="{{ minute }}">
+                                                {{ minute < 10 ? '0' + minute : minute }}
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="dp-selected"></div>
                                 </div>
-                                <div class="dp-selected"></div>
-                            </div>
+                        </div>
                         </div>
                         <div class="dp-footer">
                             <button type="button" class="btn btn-default btn-sm" ng-click="onCancelClick()">{{'CANCEL' | translate}}</button>
