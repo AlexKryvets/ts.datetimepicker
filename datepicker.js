@@ -151,13 +151,13 @@ var DatePicker = (function () {
         /* Month */
         this.elements[1] = {tag: 'div', children: [], class: 'month'};
         this.elements[1]['children'][0] = {
-            tag: 'a', class: 'dec', onclick: function () {
+            tag: 'button', class: 'dec', onclick: function () {
                 _this.increaseMonth(-1);
                 return false;
             }
         };
         this.elements[1]['children'][1] = {
-            tag: 'a', class: 'inc', onclick: function () {
+            tag: 'button', class: 'inc', onclick: function () {
                 _this.increaseMonth(1);
                 return false;
             }
@@ -168,18 +168,22 @@ var DatePicker = (function () {
                 return _this.monthNames[_this.selectedDate.getMonth()];
             }
         };
+
+        /* Calendar */
+        this.elements[2] = {tag: 'table', children: [
+            {tag: 'thead', children: [{tag: 'tr', children: []}]},
+            {tag: 'tbody', children: []}
+            ], class: 'calendar'};
         /* Day names */
-        this.elements[2] = {tag: 'div', children: [], class: 'days-names'}
         for (var i = 0; i < DAYS_A_WEEK; i++) {
-            this.elements[2]['children'][i] = {tag: 'label', value: _this.dayNames[i]};
+            this.elements[2]['children'][0]['children'][0]['children'][i] = {tag: 'th', value: _this.dayNames[i]};
         }
         /* Dates */
-        this.elements[3] = {tag: 'div', children: [], class: 'days'};
         for (var i = 0; i < MAX_WEEKS_IN_MONTH; i++) {
-            this.elements[3]['children'][i] = {tag: 'div', children: [], class: 'days-row'}
+            this.elements[2]['children'][1]['children'][i] = {tag: 'tr', children: [], class: 'days-row'}
             for (var j = 0; j < DAYS_A_WEEK; j++) {
-                this.elements[3]['children'][i]['children'][j] = {
-                    tag: 'div',
+                this.elements[2]['children'][1]['children'][i]['children'][j] = {
+                    tag: 'td',
                     data: {row: i, col: j},
                     beforebuild: buildDay
                 };
