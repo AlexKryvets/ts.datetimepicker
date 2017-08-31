@@ -1,0 +1,31 @@
+<div class="dp-widget dp-widget-date">
+    <div class="dp-column dp-column-year">
+        <div class="dp-ul-wrapper">
+            <div class="dp-ul">
+                <div ng-repeat="year in year.values" data-value="{{ year }}">{{ year }}
+                </div>
+            </div>
+        </div>
+        <div class="dp-selected"></div>
+    </div>
+    <div class="dp-column dp-column-month">
+        <div class="dp-ul-wrapper">
+            <div class="dp-ul">
+                <div ng-repeat="month in month.values" data-value="{{ month }}">
+                    {{ month < 9 ? '0' + (month + 1) : month + 1 }}
+                </div>
+            </div>
+        </div>
+        <div class="dp-selected"></div>
+    </div>
+    <div class="dp-column dp-column-day">
+        <div class="dp-ul-wrapper">
+            <div class="dp-ul">
+                <div ng-repeat="day in day.values" data-value="{{ day }}">
+                    {{ day < 10 ? '0' + day : day }}
+                </div>
+            </div>
+        </div>
+        <div class="dp-selected"></div>
+    </div>
+</div>

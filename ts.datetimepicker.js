@@ -111,6 +111,8 @@
             link: function ($scope, $element, $attributes) {
                 var date = null;
 
+                $scope.tsDatetimePicker = angular.extend({showTime: true, mode: "scroll"}, $scope.tsDatetimePicker);
+
                 $scope.day = {};
                 $scope.day.values = [];
                 $scope.day.$element = $element.find('.dp-column-day .dp-ul');
@@ -200,6 +202,47 @@
                 };
             }
         };
+    }
+
+    angular.module('ts.datetimePicker').directive("dateScroll", DateScrollDirective);
+
+    function DateScrollDirective() {
+        var directive = {
+            bindToController: false,
+            controller: DirectiveController,
+            replace: true,
+            restrict: 'E',
+            scope: {},
+            templateUrl: 'template/ts.datescroll.html',
+        };
+
+        return directive;
+
+        DirectiveController.$inject = ['$scope', '$element', '$attrs'];
+
+        function DirectiveController($scope, $element, $attrs) {
+
+        }
+    }
+
+    angular.module('ts.datetimePicker').directive("datePicker", DatePickerDirective);
+
+    function DatePickerDirective() {
+        var directive = {
+            bindToController: false,
+            controller: DirectiveController,
+            replace: true,
+            restrict: 'E',
+            scope: {}
+        };
+
+        return directive;
+
+        DirectiveController.$inject = ['$scope', '$element', '$attrs'];
+
+        function DirectiveController($scope, $element, $attrs) {
+
+        }
     }
 
 })(window, window.angular);
