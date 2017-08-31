@@ -11,8 +11,8 @@ var Datepicker = (function () {
     }
 
     function monthDays(date) {
-        var month = date.getMonth()
-            , monthDays = [31, isLeapYear(date.getFullYear()) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var month = date.getMonth();
+        var monthDays = [31, isLeapYear(date.getFullYear()) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         return monthDays[month]
     }
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="datepicker.css" rel="stylesheet"/>
+    <script type="text/javascript" src="datepicker.js"></script>
+</head>
+<body>
+
+<div id="datepicker" class="datepicker"></div>
+
+<script>
+    var datepicker = new Datepicker(document.getElementById('datepicker'), {
+        onDateChanged: function (newDate) {
+            console.log(newDate)
+        }
+    });
+</script>
+
+</body>
+</html>
