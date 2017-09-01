@@ -62,9 +62,12 @@
   text-align: center;
   cursor: pointer;
 }
-.datepicker .days-cell.selected,
+
 .datepicker .month .dec:hover,
-.datepicker .month .inc:hover,
+.datepicker .month .inc:hover {
+  opacity: 1;
+}
+.datepicker .days-cell.selected,
 .datepicker .days-cell:hover {
   background: #ddddde;
 }
