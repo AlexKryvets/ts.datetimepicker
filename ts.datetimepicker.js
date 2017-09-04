@@ -2,17 +2,8 @@
 
     'use strict';
 
-    angular.module('ts.datetimePicker', ['ts.pointerEventsNone', 'pascalprecht.translate']);
+    angular.module('ts.datetimePicker', ['ts.pointerEventsNone']);
     angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
-    angular.module('ts.datetimePicker').config(function($translateProvider){
-        $translateProvider.useStaticFilesLoader({
-            prefix: 'language/',
-            suffix: '.json'
-        });
-
-        $translateProvider.preferredLanguage("ru");
-        $translateProvider.fallbackLanguage("en");
-    });
 
     DatetimePickerController.$inject = ['$parse', '$timeout'];
 
