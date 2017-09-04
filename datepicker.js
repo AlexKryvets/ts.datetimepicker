@@ -1,9 +1,19 @@
 var DatePicker = (function () {
 
     var DAYS_A_WEEK = 7;
-    var MAX_WEEKS_IN_MONTH = 6
-    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    var MAX_WEEKS_IN_MONTH = 6;
+    var MINUTES_STEP = 5;
+    var default_lang = 'ru';
+    var months = {
+        "ru" : ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+        "en" : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    };
+    var days = {
+        "ru" : ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+        "en" : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+    };
+    //var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    //var days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     var today = new Date();
 
     function isLeapYear(year) {
@@ -124,8 +134,10 @@ var DatePicker = (function () {
 
         this.onDateChanged = options.onDateChanged;
         this.container = element;
-        this.monthNames = options.monthNames || months;
-        this.dayNames = options.dayNames || days;
+        this.lang = options.lang ? options.lang : default_lang;
+        this.monthNames = options.monthNames || ( months[this.lang] ? months[this.lang] : months[default_lang] );
+        this.dayNames = options.dayNames || ( days[this.lang] ? days[this.lang] : days[default_lang] );
+        this.minuteStep = options.minuteStep ? options.minuteStep : MINUTES_STEP;
 
         /* Calendar DOM element tree */
         this.elements = [];
@@ -161,7 +173,7 @@ var DatePicker = (function () {
                 _this.increaseMonth(1);
                 return false;
             }
-        }
+        };
         this.elements[1]['children'][2] = {
             tag: 'label',
             value: function () {
@@ -196,8 +208,7 @@ var DatePicker = (function () {
         /* Initialize selected date */
         if (options.selectedDate) {
             this.setSelectedDate(options.selectedDate, true);
-        }
-        else {
+        } else {
             this.setSelectedDate(today);
         }
     }

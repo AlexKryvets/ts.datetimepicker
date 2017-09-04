@@ -2,8 +2,17 @@
 
     'use strict';
 
-    angular.module('ts.datetimePicker', ['ts.pointerEventsNone'])
+    angular.module('ts.datetimePicker', ['ts.pointerEventsNone', 'pascalprecht.translate']);
     angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
+    angular.module('ts.datetimePicker').config(function($translateProvider){
+        $translateProvider.useStaticFilesLoader({
+            prefix: 'language/',
+            suffix: '.json'
+        });
+
+        $translateProvider.preferredLanguage("ru");
+        $translateProvider.fallbackLanguage("en");
+    });
 
     DatetimePickerController.$inject = ['$parse', '$timeout'];
 
@@ -71,7 +80,7 @@
 
     var range = function (start, end, step) {
         var array = [];
-        for (; start <= end; array.push(start), start += step || 1);
+        for (; start <= end; array.push(start < 10 ? '0'+start : start), start += step || 1);
         return array;
     };
 
@@ -236,29 +245,31 @@
 
         return directive;
 
-        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
+        DirectiveController.$inject = ['$scope', '$element', '$timeout', '$attrs'];
 
-        function DirectiveController($scope, $element, $timeout) {
+        function DirectiveController($scope, $element, $timeout, $attrs) {
+            var minuteStep = $attrs.minuteStep ? $attrs.minuteStep : MINUTES_STEP;
+
             $scope.hour.values = range(0, 23);
             $scope.hour.$element = $element.find('.dp-column-hour .dp-ul');
 
-            $scope.minute.values = range(0, 59, MINUTES_STEP);
+            $scope.minute.values = range(0, 59, minuteStep);
             $scope.minute.$element = $element.find('.dp-column-minute .dp-ul');
 
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 if (newValue) {
                     $timeout(function (){
                         animate($scope.hour.$element, getCoordinateByValue($scope.hour.$element, $scope.hour.value));
-                        animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value, MINUTES_STEP));
+                        animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value, minuteStep));
                     });
                 } else {
                     animate($scope.hour.$element, getCoordinateByValue($scope.hour.$element, $scope.hour.value));
-                    animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value, MINUTES_STEP));
+                    animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value, minuteStep));
                 }
             });
 
             bindEvents($scope, 'hour');
-            bindEvents($scope, 'minute', MINUTES_STEP);
+            bindEvents($scope, 'minute', minuteStep);
         }
     }
 
@@ -299,7 +310,6 @@
     angular.module('ts.datetimePicker').directive("timePicker", TimePickerDirective);
 
     function TimePickerDirective() {
-
         var directive = {
             bindToController: false,
             controller: DirectiveController,
@@ -311,16 +321,19 @@
 
         return directive;
 
-        DirectiveController.$inject = ['$scope', '$element'];
+        DirectiveController.$inject = ['$scope', '$element', '$attrs'];
 
-        function DirectiveController($scope, $element) {
+        function DirectiveController($scope, $element, $attrs) {
+            var minuteStep = $attrs.minuteStep ? $attrs.minuteStep : MINUTES_STEP;
+
             $scope.hour.values = range(8, 20);
-            $scope.minute.values = range(0, 59, MINUTES_STEP);
+            $scope.minute.values = range(0, 59, minuteStep);
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 if (newValue) {
-                    var rest = $scope.minute.value % MINUTES_STEP;
-                    $scope.minute.value += rest === 0 ? 0 : MINUTES_STEP - rest;
+                    var rest = $scope.minute.value % minuteStep;
+                    $scope.minute.value += rest === 0 ? 0 : minuteStep - rest;
                 }
+                $scope.minute.value = $scope.minute.value < 10 ? '0' + $scope.minute.value : $scope.minute.value;
             });
         }
     }

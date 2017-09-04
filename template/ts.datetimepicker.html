@@ -16,10 +16,10 @@
                         <div ng-if="tsDatetimePicker.showTime">
                             <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
                             <div ng-if="tsDatetimePicker.mode == 'scroll'">
-                                <time-scroll></time-scroll>
+                                <time-scroll minuteStep="{{ tsDatetimePicker.minuteStep }}"></time-scroll>
                             </div>
                             <div ng-if="tsDatetimePicker.mode == 'picker'">
-                                <time-picker></time-picker>
+                                <time-picker minuteStep="{{ tsDatetimePicker.minuteStep }}"></time-picker>
                             </div>
                         </div>
                         <div class="dp-footer">
