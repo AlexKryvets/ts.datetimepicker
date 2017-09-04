@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexKryvets/ts.datetimepicker.git"
+    "url": "git+https://github.com/AlexKryvets/ts.datetimepicker.git#develop"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "bootstrap": "~3.3.*",
     "angular": "~1.5.*",
     "angular-translate": "~2.13.0",
+    "angular-translate-loader-static-files": "~2.13.0",
     "ts.pointereventsnone": "https://github.com/AlexKryvets/ts.pointereventsnone.git"
   }
 }
