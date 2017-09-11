@@ -12,7 +12,7 @@
         <div class="dp-ul-wrapper">
             <div class="dp-ul">
                 <div ng-repeat="month in month.values" data-value="{{ month }}">
-                    {{ month < 9 ? '0' + (month + 1) : month + 1 }}
+                    {{ ((month + 1) < 10) ? '0' + (month + 1) : (month + 1) }}
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
         <div class="dp-ul-wrapper">
             <div class="dp-ul">
                 <div ng-repeat="day in day.values" data-value="{{ day }}">
-                    {{ day < 10 ? '0' + day : day }}
+                    {{ (day < 10) ? '0' + day : day }}
                 </div>
             </div>
         </div>
