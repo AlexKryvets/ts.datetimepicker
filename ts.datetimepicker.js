@@ -435,7 +435,7 @@
             var minuteStep = $attrs.minuteStep ? $attrs.minuteStep : MINUTES_STEP;
 
             $scope.hour.values = [];
-            range(8, 20).forEach(function(element, index) {
+            range(6, 23).forEach(function(element, index) {
                 $scope.hour.values.push(element < 10 ? '0' + element : element);
             });
             $scope.hour.element = $element.find(".dp-timepicker-hour");
