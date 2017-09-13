@@ -3,9 +3,7 @@
     'use strict';
 
     angular.module('ts.datetimePicker', ['ts.pointerEventsNone']);
-    angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
-
-    DatetimePickerController.$inject = ['$parse', '$timeout'];
+    angular.module('ts.datetimePicker').directive('tsDatetimePicker', ['$parse', '$timeout', DatetimePickerController]);
 
     function DatetimePickerController ($parse, $timeout) {
         return {
@@ -201,7 +199,7 @@
 
         var directive = {
             bindToController: false,
-            controller: DirectiveController,
+            controller: ['$scope', '$element', '$attrs', '$timeout', DirectiveController],
             replace: true,
             restrict: 'E',
             scope: false,
@@ -233,12 +231,10 @@
             '   </div>' +
             '</div>' +
             '',
-           //templateUrl: 'template/ts.datescroll.html'
+            //templateUrl: 'template/ts.datescroll.html'
         };
 
         return directive;
-
-        DirectiveController.$inject = ['$scope', '$element', '$attrs', '$timeout'];
 
         function DirectiveController($scope, $element, $attrs, $timeout) {
             $scope.day.values = [];
@@ -291,7 +287,7 @@
 
         var directive = {
             bindToController: false,
-            controller: DirectiveController,
+            controller: ['$scope', '$element', '$timeout', '$attrs', DirectiveController],
             replace: true,
             restrict: 'E',
             scope: false,
@@ -319,8 +315,6 @@
         };
 
         return directive;
-
-        DirectiveController.$inject = ['$scope', '$element', '$timeout', '$attrs'];
 
         function DirectiveController($scope, $element, $timeout, $attrs) {
             var minuteStep = $attrs.minuteStep ? $attrs.minuteStep : MINUTES_STEP;
@@ -351,13 +345,13 @@
     /**
      * DatePicker & TimePicker Directives
      */
-    angular.module('ts.datetimePicker').directive("datePicker", DatePickerDirective);
+    angular.module('ts.datetimePicker').directive("datePicker", [DatePickerDirective]);
 
     function DatePickerDirective() {
 
         var directive = {
             bindToController: false,
-            controller: DirectiveController,
+            controller: ['$scope', '$element', DirectiveController],
             replace: true,
             restrict: 'E',
             scope: false,
@@ -365,8 +359,6 @@
         };
 
         return directive;
-
-        DirectiveController.$inject = ['$scope', '$element'];
 
         function DirectiveController($scope, $element) {
             var datePicker = new DatePicker($element[0], {
@@ -391,12 +383,12 @@
         }
     }
 
-    angular.module('ts.datetimePicker').directive("timePicker", TimePickerDirective);
+    angular.module('ts.datetimePicker').directive("timePicker", [TimePickerDirective]);
 
     function TimePickerDirective() {
         var directive = {
             bindToController: false,
-            controller: DirectiveController,
+            controller: ['$scope', '$element', '$attrs', DirectiveController],
             replace: true,
             restrict: 'E',
             scope: false,
@@ -430,7 +422,6 @@
                     }
 
                     $scope.$apply();
-                    console.log($scope[elementName].value);
                 });
                 return true;
             } else {
@@ -439,8 +430,6 @@
         };
 
         return directive;
-
-        DirectiveController.$inject = ['$scope', '$element', '$attrs'];
 
         function DirectiveController($scope, $element, $attrs) {
             var minuteStep = $attrs.minuteStep ? $attrs.minuteStep : MINUTES_STEP;
