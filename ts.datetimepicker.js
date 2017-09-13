@@ -319,7 +319,7 @@
         function DirectiveController($scope, $element, $timeout, $attrs) {
             var minuteStep = $attrs.minuteStep ? $attrs.minuteStep : MINUTES_STEP;
 
-            $scope.hour.values = range(0, 23);
+            $scope.hour.values = range(6, 23);
             $scope.hour.$element = $element.find('.dp-column-hour .dp-ul');
 
             $scope.minute.values = range(0, 59, minuteStep);
