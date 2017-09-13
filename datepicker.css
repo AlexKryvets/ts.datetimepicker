@@ -74,12 +74,12 @@
 .datepicker .days-cell.off {
   color: #909090;
 }
+div.timepicker{
+  font-size: 32px;
+}
 .timepicker select{
   outline: none;
   border: none;
   font-size: 32px;
   -webkit-appearance: none;
-}
-.timepicker select:not(:first-of-type){
-  margin-left: 10px;
 }

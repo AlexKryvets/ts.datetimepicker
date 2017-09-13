@@ -394,7 +394,7 @@
             scope: false,
             template : '' +
             '<div class="timepicker">'+
-            '   <select ng-model="hour.value" class="dp-timepicker-hour" ng-options="value for value in hour.values track by value"></select>'+
+            '   <select ng-model="hour.value" class="dp-timepicker-hour" ng-options="value for value in hour.values track by value"></select> : '+
             '   <select ng-model="minute.value" class="dp-timepicker-minute" ng-options="value for value in minute.values track by value"></select>'+
             '</div>' +
             '',
