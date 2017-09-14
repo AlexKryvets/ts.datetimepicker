@@ -22,6 +22,7 @@
     "angular": "~1.5.*",
     "angular-translate": "~2.13.0",
     "angular-translate-loader-static-files": "~2.13.0",
-    "ts.pointereventsnone": "https://github.com/AlexKryvets/ts.pointereventsnone.git"
+    "ts.pointereventsnone": "https://github.com/AlexKryvets/ts.pointereventsnone.git",
+    "ts.toast": "https://github.com/AlexKryvets/ts.toast.git"
   }
 }

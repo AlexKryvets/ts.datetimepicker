@@ -11,6 +11,7 @@
     <script type="text/javascript" src="node_modules/angular-translate/dist/angular-translate.js"></script>
     <script type="text/javascript" src="node_modules/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script type="text/javascript" src="node_modules/ts.pointereventsnone/ts.pointereventsnone.js"></script>
+    <script type="text/javascript" src="node_modules/ts.toast/ts.toast.js"></script>
     <script type="text/javascript" src="ts.datetimepicker.js"></script>
     <script type="text/javascript" src="datepicker.js"></script>
     <style>
@@ -39,7 +40,13 @@
             showTime: true,
             scope: null,
             date: null,
-            mode: 'picker' //scroll
+            mode: 'scroll', //scroll
+            first_hour: 6,
+            last_hour: 23,
+            minute_step: 5,
+            onOutOfRange : function(MIN, MAX){
+                console.log('out of range : ' + MIN + ':00 - ' + MAX + ':00');
+            }
         };
 
         $scope.openDateTimePicker = function (scope, date) {
