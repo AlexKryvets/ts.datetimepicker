@@ -3,54 +3,16 @@
     'use strict';
 
     angular.module('ts.datetimePicker', ['ts.pointerEventsNone']);
-    angular.module('ts.datetimePicker').directive('tsDatetimePicker', ['$parse', '$timeout', DatetimePickerController]);
+    angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
 
-    function DatetimePickerController ($parse, $timeout, tsToast) {
+    DatetimePickerController.$inject = ['$parse'];
+    function DatetimePickerController ($parse) {
         return {
             restrict: 'E',
             scope: {
-                tsDatetimePicker: '=',
-                scope: '=tsDatetimePickerScope',
-                date: '=tsDatetimePickerDate',
-                // show: '=tsDatetimePickerShow'
+                tsDatetimePicker: '='
             },
-            template: '' +
-            '<div ng-show="tsDatetimePicker.show" class="modal" pointer-events-none>'+
-            '   <div class="vertical-align">'+
-            '       <div>'+
-            '           <div class="modal-dialog modal-sm">'+
-            '               <div class="modal-content clearfix">'+
-            '                   <div class="dp">'+
-            '                       <div class="dp-header">'+
-            '                           <h4>{{\'DATE_AND_TIME\' | translate}}</h4>'+
-            '                       </div>'+
-            '                       <div ng-if="tsDatetimePicker.mode == \'scroll\'">'+
-            '                           <date-scroll></date-scroll>'+
-            '                       </div>'+
-            '                       <div ng-if="tsDatetimePicker.mode == \'picker\'">'+
-            '                           <date-picker></date-picker>'+
-            '                       </div>' +
-            '                       <div ng-if="tsDatetimePicker.showTime">' +
-            '                           <span class="glyphicon glyphicon-time" aria-hidden="true"></span>' +
-            '                           <div ng-if="tsDatetimePicker.mode == \'scroll\'">' +
-            '                               <time-scroll minuteStep="{{ tsDatetimePicker.minuteStep }}"></time-scroll>' +
-            '                           </div>' +
-            '                           <div ng-if="tsDatetimePicker.mode == \'picker\'">' +
-            '                               <time-picker minuteStep="{{ tsDatetimePicker.minuteStep }}"></time-picker>' +
-            '                           </div>' +
-            '                       </div>' +
-            '                       <div class="dp-footer">' +
-            '                           <button type="button" class="btn btn-default btn-sm" ng-click="onCancelClick()">{{\'CANCEL\' | translate}}</button>' +
-            '                           <button type="button" class="btn btn-primary btn-sm" ng-click="onSetClick()">{{\'OK\' | translate}}</button>' +
-            '                       </div>' +
-            '                   </div>' +
-            '               </div>' +
-            '           </div>' +
-            '       </div>' +
-            '   </div>' +
-            '</div>' +
-            '',
-            //templateUrl: 'template/ts.datetimepicker.html',
+            templateUrl: 'template/ts.datetimepicker.html',
             link: function ($scope, $element, $attributes) {
                 var date = null;
                 $scope.tsDatetimePicker = angular.extend({showTime: true, mode: "scroll"}, $scope.tsDatetimePicker);
@@ -220,44 +182,17 @@
 
         var directive = {
             bindToController: false,
-            controller: ['$scope', '$element', '$attrs', '$timeout', DirectiveController],
+            controller: DirectiveController,
             replace: true,
             restrict: 'E',
             scope: false,
-            template : '' +
-            '<div class="dp-widget dp-widget-date">' +
-            '   <div class="dp-column dp-column-year">' +
-            '       <div class="dp-ul-wrapper">' +
-            '           <div class="dp-ul">' +
-            '               <div ng-repeat="year in year.values" data-value="{{ year }}">{{ year }} </div>' +
-            '           </div>' +
-            '       </div>' +
-            '       <div class="dp-selected"></div>' +
-            '   </div>' +
-            '   <div class="dp-column dp-column-month">' +
-            '       <div class="dp-ul-wrapper">' +
-            '           <div class="dp-ul">' +
-            '               <div ng-repeat="month in month.values" data-value="{{ month }}"> {{ ((month + 1) < 10) ? \'0\' + (month + 1) : (month + 1) }}</div>' +
-            '           </div>' +
-            '       </div>' +
-            '       <div class="dp-selected"></div>' +
-            '   </div>' +
-            '   <div class="dp-column dp-column-day">' +
-            '       <div class="dp-ul-wrapper">' +
-            '           <div class="dp-ul">' +
-            '               <div ng-repeat="day in day.values" data-value="{{ day }}"> {{ (day < 10) ? \'0\' + day : day }}</div>' +
-            '           </div>' +
-            '       </div>' +
-            '       <div class="dp-selected"></div>' +
-            '   </div>' +
-            '</div>' +
-            '',
-            //templateUrl: 'template/ts.datescroll.html'
+            templateUrl: 'template/ts.datescroll.html'
         };
 
         return directive;
 
-        function DirectiveController($scope, $element, $attrs, $timeout) {
+        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
+        function DirectiveController($scope, $element, $timeout) {
             $scope.day.values = [];
             $scope.day.$element = $element.find('.dp-column-day .dp-ul');
 
@@ -308,35 +243,16 @@
 
         var directive = {
             bindToController: false,
-            controller: ['$scope', '$element', '$timeout', DirectiveController],
+            controller: DirectiveController,
             replace: true,
             restrict: 'E',
             scope: false,
-            template : '' +
-            '<div class="dp-widget dp-widget-time">' +
-            '   <div class="dp-column dp-column-hour">' +
-            '       <div class="dp-ul-wrapper">' +
-            '           <div class="dp-ul">' +
-            '               <div ng-repeat="hour in hour.values" data-value="{{ hour }}"> {{ hour < 10 ? \'0\' + hour : hour }}</div>' +
-            '           </div>' +
-            '       </div>' +
-            '       <div class="dp-selected"></div>' +
-            '   </div>' +
-            '   <div class="dp-column dp-column-minute">' +
-            '       <div class="dp-ul-wrapper">' +
-            '           <div class="dp-ul">' +
-            '               <div ng-repeat="minute in minute.values" data-value="{{ minute }}">{{ minute < 10 ? \'0\' + minute : minute }}</div>' +
-            '           </div>' +
-            '       </div>' +
-            '       <div class="dp-selected"></div>' +
-            '   </div>' +
-            '</div>' +
-            '',
-            //templateUrl: 'template/ts.timescroll.html'
+            templateUrl: 'template/ts.timescroll.html'
         };
 
         return directive;
 
+        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
         function DirectiveController($scope, $element, $timeout) {
             $scope.hour.values = range(0, 23);
             $scope.hour.$element = $element.find('.dp-column-hour .dp-ul');
@@ -407,17 +323,11 @@
     function TimePickerDirective() {
         var directive = {
             bindToController: false,
-            controller: ['$scope', '$element', '$timeout', DirectiveController],
+            controller: DirectiveController,
             replace: true,
             restrict: 'E',
             scope: false,
-            template : '' +
-            '<div class="timepicker">'+
-            '   <select ng-model="hour.value" class="dp-timepicker-hour" ng-options="value for value in hour.values track by value"></select> : '+
-            '   <select ng-model="minute.value" class="dp-timepicker-minute" ng-options="value for value in minute.values track by value"></select>'+
-            '</div>' +
-            '',
-            //templateUrl: 'template/ts.timepicker.html'
+            templateUrl: 'template/ts.timepicker.html'
         };
 
         var bindScroll = function(elementName, $scope){
@@ -450,7 +360,8 @@
 
         return directive;
 
-        function DirectiveController($scope, $element, $timeout) {
+        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
+            function DirectiveController($scope, $element, $timeout) {
 
             $scope.hour.values = [];
             range(FIRST_HOUR, LAST_HOUR - 1).forEach(function(element) {
