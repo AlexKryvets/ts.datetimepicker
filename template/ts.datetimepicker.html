@@ -5,7 +5,7 @@
                 <div class="modal-content clearfix">
                     <div class="dp">
                         <div class="dp-header">
-                            <h4>{{'DATE_AND_TIME' | translate}}</h4>
+                            <h4>{{'Date and time'|trans:tsDatetimePicker.language}}</h4>
                         </div>
                         <div ng-if="tsDatetimePicker.mode == 'scroll'">
                             <date-scroll></date-scroll>
@@ -16,18 +16,17 @@
                         <div ng-if="tsDatetimePicker.showTime">
                             <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
                             <div ng-if="tsDatetimePicker.mode == 'scroll'">
-                                <time-scroll minuteStep="{{ tsDatetimePicker.minuteStep }}"></time-scroll>
+                                <time-scroll></time-scroll>
                             </div>
                             <div ng-if="tsDatetimePicker.mode == 'picker'">
-                                <time-picker minuteStep="{{ tsDatetimePicker.minuteStep }}"></time-picker>
+                                <time-picker></time-picker>
                             </div>
                         </div>
                         <div class="dp-footer">
-                            <button type="button" class="btn btn-default btn-sm" ng-click="onCancelClick()">{{'CANCEL' |
-                                translate}}
+                            <button type="button" class="btn btn-default btn-sm" ng-click="onCancelClick()">
+                                {{'Cancel'|trans:tsDatetimePicker.language}}
                             </button>
-                            <button type="button" class="btn btn-primary btn-sm" ng-click="onSetClick()">{{'OK' |
-                                translate}}
+                            <button type="button" class="btn btn-primary btn-sm" ng-click="onSetClick()">{{'OK'}}
                             </button>
                         </div>
                     </div>

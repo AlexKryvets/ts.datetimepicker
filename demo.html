@@ -8,44 +8,43 @@
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script type="text/javascript" src="node_modules/angular/angular.js"></script>
-    <script type="text/javascript" src="node_modules/angular-translate/dist/angular-translate.js"></script>
-    <script type="text/javascript" src="node_modules/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <script type="text/javascript" src="node_modules/ts.pointereventsnone/ts.pointereventsnone.js"></script>
-    <script type="text/javascript" src="node_modules/ts.toast/ts.toast.js"></script>
     <script type="text/javascript" src="ts.datetimepicker.js"></script>
     <script type="text/javascript" src="datepicker.js"></script>
     <style>
         .modal {
             display: block !important;
+            margin-top: 200px;
         }
     </style>
 </head>
 <body ng-controller="AppController">
 
 <button ng-click="openDateTimePicker(this, 'date')">DatePicker</button>
-<input type="text" ng-model="date" readonly />
+<input type="text" ng-model="date" readonly/>
 <ts-datetime-picker ts-datetime-picker="dateTimePicker"></ts-datetime-picker>
+<button ng-click="toggleLanguage()">Toggle language {{dateTimePicker.language}}</button>
 
 <script>
     angular.module("app", [
-        "ts.datetimePicker",'pascalprecht.translate'
+        "ts.datetimePicker"
     ]);
     angular.module("app").controller('AppController', AppController);
 
-    function AppController ($scope) {
+    function AppController($scope) {
         $scope.date = new Date();
 
         $scope.dateTimePicker = {
+            language: 'en',
             show: false,
             showTime: true,
             scope: null,
             date: null,
-            mode: 'scroll', //scroll
-            first_hour: 6,
-            last_hour: 23,
-            minute_step: 5,
-            onOutOfRange : function(MIN, MAX){
-                console.log('out of range : ' + MIN + ':00 - ' + MAX + ':00');
+            mode: 'picker', //scroll
+            timeRange: [[6, 0], [23, 0]],
+            minutesStep: 5,
+            onOutOfRange: function () {
+                console.log('out of range : ' + 6 + ':00 - ' + 23 + ':00');
             }
         };
 
@@ -53,6 +52,14 @@
             $scope.dateTimePicker.scope = scope;
             $scope.dateTimePicker.date = date;
             $scope.dateTimePicker.show = true;
+        };
+
+        $scope.toggleLanguage = function () {
+            if ($scope.dateTimePicker.language === 'en') {
+                $scope.dateTimePicker.language = 'ru';
+            } else {
+                $scope.dateTimePicker.language = 'en';
+            }
         };
     }
 

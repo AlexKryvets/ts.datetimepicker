@@ -2,22 +2,20 @@ var DatePicker = (function () {
 
     var DAYS_A_WEEK = 7;
     var MAX_WEEKS_IN_MONTH = 6;
-    var MINUTES_STEP = 5;
-    var default_lang = 'ru';
+
     var months = {
-        "ru" : ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-        "en" : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        "ru": ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+        "en": ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     };
     var days = {
-        "ru" : ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-        "en" : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        "ru": ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+        "en": ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
     };
-    //var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    //var days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
     var today = new Date();
 
     function isLeapYear(year) {
-        return year % 4 === 0 && !(year % 100 === 0 && year % 400 != 0)
+        return year % 4 === 0 && !(year % 100 === 0 && year % 400 != 0);
     }
 
     function monthDays(date) {
@@ -134,10 +132,9 @@ var DatePicker = (function () {
 
         this.onDateChanged = options.onDateChanged;
         this.container = element;
-        this.lang = options.lang ? options.lang : default_lang;
-        this.monthNames = options.monthNames || ( months[this.lang] ? months[this.lang] : months[default_lang] );
-        this.dayNames = options.dayNames || ( days[this.lang] ? days[this.lang] : days[default_lang] );
-        this.minuteStep = options.minuteStep ? options.minuteStep : MINUTES_STEP;
+        this.language = options.language || 'en';
+        this.monthNames = options.monthNames || (months[this.language] || months['en']);
+        this.dayNames = options.dayNames || (days[this.language] || days['en']);
 
         /* Calendar DOM element tree */
         this.elements = [];
@@ -188,7 +185,13 @@ var DatePicker = (function () {
             ], class: 'calendar'};
         /* Day names */
         for (var i = 0; i < DAYS_A_WEEK; i++) {
-            this.elements[2]['children'][0]['children'][0]['children'][i] = {tag: 'th', value: _this.dayNames[i]};
+            this.elements[2]['children'][0]['children'][0]['children'][i] = {
+                tag: 'th',
+                index: i,
+                value: function () {
+                    return _this.dayNames[this.index];
+                }
+            };
         }
         /* Dates */
         for (var i = 0; i < MAX_WEEKS_IN_MONTH; i++) {
@@ -244,6 +247,17 @@ var DatePicker = (function () {
         return this.selectedDate;
     };
 
+    DatePicker.prototype.setLanguage = function (language) {
+        var monthNames = months[language];
+        var dayNames = days[language];
+        if (monthNames && dayNames) {
+            this.language = language;
+            this.monthNames = monthNames;
+            this.dayNames = dayNames;
+            this.build();
+        }
+    };
+
     DatePicker.prototype.build = function () {
         /* Build one by one */
         for (var i = 0, max = this.elements.length; i < max; i++) {
@@ -260,7 +274,7 @@ var DatePicker = (function () {
 
         /* Remove from DOM. */
         this.container.parentNode.removeChild(this.container);
-        
+
         /* Destroy reference to invisible DOM element. */
         this.container = null;
 

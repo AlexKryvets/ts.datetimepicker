@@ -2,26 +2,52 @@
 
     'use strict';
 
+    var translates = {
+        "en": {
+            "Date and time" : "Date and time",
+            "Cancel" : "Cancel"
+        },
+        "ru": {
+            "Date and time" : "Дата и время",
+            "Cancel" : "Отмена"
+        }
+    };
+
     angular.module('ts.datetimePicker', ['ts.pointerEventsNone']);
+
+    angular.module('ts.datetimePicker').filter('trans', TranslateFilterFactory);
+
+    TranslateFilterFactory.$inject = [];
+    function TranslateFilterFactory() {
+        var translateFilter = function (translationId, language) {
+            return translates[language || 'en'][translationId];
+        };
+        translateFilter.$stateful = true;
+        return translateFilter;
+    }
+
     angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
 
     DatetimePickerController.$inject = ['$parse'];
-    function DatetimePickerController ($parse) {
+    function DatetimePickerController($parse) {
         return {
             restrict: 'E',
             scope: {
                 tsDatetimePicker: '='
             },
             templateUrl: 'template/ts.datetimepicker.html',
-            link: function ($scope, $element, $attributes) {
+            link: function ($scope) {
                 var date = null;
-                $scope.tsDatetimePicker = angular.extend({showTime: true, mode: "scroll"}, $scope.tsDatetimePicker);
-
-                MINUTES_STEP = $scope.tsDatetimePicker.minute_step ? $scope.tsDatetimePicker.minute_step : MINUTES_STEP;
-                FIRST_HOUR   = $scope.tsDatetimePicker.first_hour  ? $scope.tsDatetimePicker.first_hour  : FIRST_HOUR;
-                LAST_HOUR    = $scope.tsDatetimePicker.last_hour   ? $scope.tsDatetimePicker.last_hour   : LAST_HOUR;
-
-                var onOutOfRange = $scope.tsDatetimePicker.onOutOfRange;
+                $scope.tsDatetimePicker = angular.extend({
+                    language: "en",
+                    showTime: true,
+                    mode: "scroll",
+                    timeRange: [[0, 0], [23, 59]],
+                    minutesStep: 5,
+                    onOutOfRange: function () {
+                        throw new RangeError('Date out of accepted range.');
+                    }
+                }, $scope.tsDatetimePicker);
 
                 $scope.day = {};
                 $scope.month = {};
@@ -48,17 +74,27 @@
                         var date = new Date($scope.year.value, $scope.month.value, $scope.day.value);
                     }
 
-                    if($scope.tsDatetimePicker.showTime
-                        && ($scope.hour.value < FIRST_HOUR
-                        || ($scope.hour.value > (LAST_HOUR - 1) && $scope.minute.value > 0))){
-                        if(onOutOfRange){
-                            onOutOfRange(FIRST_HOUR, LAST_HOUR);
-                        } else {
-                            alert('Hour out of accepted range. Accepted range : ' + FIRST_HOUR + ':00 - ' + LAST_HOUR + ':00');
-                        }
-                    } else {
+                    var timeRange = $scope.tsDatetimePicker.timeRange;
+                    var minDate = new Date(
+                        $scope.year.value,
+                        $scope.month.value,
+                        $scope.day.value,
+                        timeRange[0][0],
+                        timeRange[0][1]
+                    );
+                    var maxDate = new Date(
+                        $scope.year.value,
+                        $scope.month.value,
+                        $scope.day.value,
+                        timeRange[1][0],
+                        timeRange[1][1]
+                    );
+
+                    if (date >= minDate && date <= maxDate) {
                         $parse($scope.tsDatetimePicker.date).assign($scope.tsDatetimePicker.scope, date);
                         $scope.tsDatetimePicker.show = false;
+                    } else {
+                        $scope.tsDatetimePicker.onOutOfRange();
                     }
                 };
 
@@ -80,9 +116,6 @@
     var HEIGHT = 40;
     var minYear = 2000;
     var maxYear = 2020;
-    var MINUTES_STEP = 5;
-    var FIRST_HOUR = 0;
-    var LAST_HOUR = 23;
 
     var range = function (start, end, step) {
         var array = [];
@@ -119,7 +152,7 @@
         return e.clientY;
     };
 
-    var bindEvents = function ($scope, fieldName, step, min, max) {
+    var bindEvents = function ($scope, fieldName, step) {
         var active = false;
         var currentY = null;
         var currentCoordinate = null;
@@ -162,10 +195,8 @@
                 } else if (newCoordinate < HEIGHT - (field.values.length - 1) * HEIGHT) {
                     newCoordinate = HEIGHT - (field.values.length - 1) * HEIGHT;
                 }
-                field.value = field.values[1 - newCoordinate / HEIGHT];
                 animate(field.$element, newCoordinate, Math.abs(newCoordinate - currentCoordinate) / HEIGHT * 0.1);
-
-                //field.value = field.values[1 - newCoordinate / HEIGHT];
+                field.value = field.values[1 - newCoordinate / HEIGHT];
                 $scope.$apply();
                 currentY = currentCoordinate = lastPositiveDeltaY = null
             }
@@ -204,7 +235,7 @@
 
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 if (newValue) {
-                    $timeout(function (){
+                    $timeout(function () {
                         animate($scope.year.$element, getCoordinateByValue($scope.year.$element, $scope.year.value));
                         animate($scope.month.$element, getCoordinateByValue($scope.month.$element, $scope.month.value));
                         animate($scope.day.$element, getCoordinateByValue($scope.day.$element, $scope.day.value));
@@ -262,7 +293,7 @@
 
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 if (newValue) {
-                    $timeout(function (){
+                    $timeout(function () {
                         animate($scope.hour.$element, getCoordinateByValue($scope.hour.$element, $scope.hour.value));
                         animate($scope.minute.$element, getCoordinateByValue($scope.minute.$element, $scope.minute.value));
                     });
@@ -272,8 +303,8 @@
                 }
             });
 
-            bindEvents($scope, 'hour', 0 , FIRST_HOUR, LAST_HOUR);
-            bindEvents($scope, 'minute', MINUTES_STEP);
+            bindEvents($scope, 'hour');
+            bindEvents($scope, 'minute', $scope.tsDatetimePicker.minutesStep);
         }
     }
 
@@ -297,11 +328,15 @@
 
         function DirectiveController($scope, $element) {
             var datePicker = new DatePicker($element[0], {
+                language: $scope.tsDatetimePicker.language,
                 onDateChanged: function (date) {
                     $scope.day.value = date.getDate();
                     $scope.month.value = date.getMonth();
                     $scope.year.value = date.getFullYear();
                 }
+            });
+            $scope.$watch('tsDatetimePicker.language', function (newValue) {
+                datePicker.setLanguage(newValue);
             });
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 var date = new Date();
@@ -312,7 +347,7 @@
                     $scope.day ? $scope.day.value : date.getDay()
                 ));
             });
-            $scope.$on('$destroy', function() {
+            $scope.$on('$destroy', function () {
                 datePicker.destroy();
             });
         }
@@ -330,9 +365,9 @@
             templateUrl: 'template/ts.timepicker.html'
         };
 
-        var bindScroll = function(elementName, $scope){
-            if($scope[elementName].element && $scope[elementName].values){
-                $scope[elementName].element.bind("DOMMouseScroll mousewheel onmousewheel", function(event){
+        var bindScroll = function (elementName, $scope) {
+            if ($scope[elementName].element && $scope[elementName].values) {
+                $scope[elementName].element.bind("DOMMouseScroll mousewheel onmousewheel", function (event) {
                     event.preventDefault();
                     event.stopPropagation();
 
@@ -340,13 +375,13 @@
 
                     var index = $scope[elementName].values.indexOf($scope[elementName].value);
 
-                    if(delta < 0){
-                        if($scope[elementName].values[index -1]){
-                            $scope[elementName].value = $scope[elementName].values[index -1];
+                    if (delta < 0) {
+                        if ($scope[elementName].values[index - 1]) {
+                            $scope[elementName].value = $scope[elementName].values[index - 1];
                         }
-                    } else if (delta > 0){
-                        if($scope[elementName].values[index +1]){
-                            $scope[elementName].value = $scope[elementName].values[index +1];
+                    } else if (delta > 0) {
+                        if ($scope[elementName].values[index + 1]) {
+                            $scope[elementName].value = $scope[elementName].values[index + 1];
                         }
                     }
 
@@ -361,71 +396,32 @@
         return directive;
 
         DirectiveController.$inject = ['$scope', '$element', '$timeout'];
-            function DirectiveController($scope, $element, $timeout) {
-
+        function DirectiveController($scope, $element, $timeout) {
+            var timeRange = $scope.tsDatetimePicker.timeRange;
+            var minutesStep = $scope.tsDatetimePicker.minutesStep;
             $scope.hour.values = [];
-            range(FIRST_HOUR, LAST_HOUR - 1).forEach(function(element) {
-                $scope.hour.values.push((element < 10)? '0' + element : element);
+            range(timeRange[0][0], timeRange[1][0]).forEach(function (element) {
+                $scope.hour.values.push((element < 10) ? '0' + element : element);
             });
-            $scope.hour.template_values = $scope.hour.values.slice();
+
             $scope.hour.element = $element.find(".dp-timepicker-hour");
             bindScroll('hour', $scope);
 
             $scope.minute.values = [];
-            range(0, 59, MINUTES_STEP).forEach(function(element) {
+            range(0, 59, minutesStep).forEach(function (element) {
                 $scope.minute.values.push((element < 10) ? '0' + element : element);
             });
-            $scope.minute.template_values = $scope.minute.values.slice();
+
             $scope.minute.element = $element.find(".dp-timepicker-minute");
             bindScroll('minute', $scope);
 
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
-                if (newValue && !$scope.hour.value) {
-                    var rest = $scope.minute.value % MINUTES_STEP;
-                    $scope.minute.value += rest === 0 ? 0 : MINUTES_STEP - rest;
+                if (newValue) {
+                    var rest = $scope.minute.value % minutesStep;
+                    $scope.minute.value += rest === 0 ? 0 : minutesStep - rest;
                 }
-
-                $scope.hour.value = (($scope.hour.value !== undefined) && ($scope.hour.value < 10) && ($scope.hour.value.toString().length == 1)) ? '0' + $scope.hour.value : $scope.hour.value;
-                $scope.minute.value = (($scope.minute.value !== undefined) && ($scope.minute.value < 10) && ($scope.minute.value.toString().length == 1)) ? '0' + $scope.minute.value : $scope.minute.value;
-
-                $scope.minute.values = $scope.minute.template_values.slice();
-                $scope.hour.values   = $scope.hour.template_values.slice();
-
-                //hide minutes with values not in range
-                if($scope.minute.values.indexOf($scope.minute.value) == -1){
-                    var insert_at_index = 0;
-
-                    $scope.minute.values.forEach(function(min_val, index){
-                        if(parseInt($scope.minute.value) > parseInt(min_val) && (!$scope.minute.values[index+1] || (parseInt($scope.minute.value) < $scope.minute.values[index+1]))){
-                            insert_at_index = index+1;
-                        }
-                    });
-
-                    if(insert_at_index !== null){
-                        $scope.minute.values.splice(insert_at_index, 0, $scope.minute.value);
-                        $timeout(function(){
-                            $scope.minute.element.find('option[value='+$scope.minute.value+']')[0].style.display = 'none';
-                        });
-                    }
-                }
-
-                //hide hours with values not in range
-                if($scope.hour.values.indexOf($scope.hour.value) == -1){
-                    var insert_at_index = 0;
-
-                    $scope.hour.values.forEach(function(min_val, index){
-                        if(parseInt($scope.hour.value) > parseInt(min_val) && (!$scope.hour.values[index+1] || (parseInt($scope.hour.value) < $scope.hour.values[index+1]))){
-                            insert_at_index = index+1;
-                        }
-                    });
-
-                    if(insert_at_index !== null){
-                        $scope.hour.values.splice(insert_at_index, 0, $scope.hour.value);
-                        $timeout(function(){
-                            $scope.hour.element.find('option[value='+$scope.hour.value+']')[0].style.display = 'none';
-                        });
-                    }
-                }
+                $scope.hour.value = $scope.hour.value < 10 ? '0' + $scope.hour.value : $scope.hour.value;
+                $scope.minute.value = $scope.minute.value  < 10 ? '0' + $scope.minute.value : $scope.minute.value;
             });
         }
     }
