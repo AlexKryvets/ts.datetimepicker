@@ -5,7 +5,7 @@
                 <div class="modal-content clearfix">
                     <div class="dp">
                         <div class="dp-header">
-                            <h4>{{'Date and time'|trans:tsDatetimePicker.language}}</h4>
+                            <h4>{{tsDatetimePicker.showTime ? 'Date and time' : 'Date'|trans:tsDatetimePicker.language}}</h4>
                         </div>
                         <div ng-if="tsDatetimePicker.mode == 'scroll'">
                             <date-scroll></date-scroll>

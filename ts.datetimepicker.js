@@ -5,10 +5,12 @@
     var translates = {
         "en": {
             "Date and time" : "Date and time",
+            "Date" : "Date",
             "Cancel" : "Cancel"
         },
         "ru": {
             "Date and time" : "Дата и время",
+            "Date" : "Дата",
             "Cancel" : "Отмена"
         }
     };
@@ -68,7 +70,8 @@
                 });
 
                 $scope.onSetClick = function () {
-                    if ($scope.tsDatetimePicker.showTime) {
+                    var showTime = $scope.tsDatetimePicker.showTime;
+                    if (showTime) {
                         var date = new Date($scope.year.value, $scope.month.value, $scope.day.value, $scope.hour.value, $scope.minute.value);
                     } else {
                         var date = new Date($scope.year.value, $scope.month.value, $scope.day.value);
@@ -79,15 +82,15 @@
                         $scope.year.value,
                         $scope.month.value,
                         $scope.day.value,
-                        timeRange[0][0],
-                        timeRange[0][1]
+                        showTime ? timeRange[0][0] : 0,
+                        showTime ? timeRange[0][1] : 0
                     );
                     var maxDate = new Date(
                         $scope.year.value,
                         $scope.month.value,
                         $scope.day.value,
-                        timeRange[1][0],
-                        timeRange[1][1]
+                        showTime ? timeRange[1][0] : 0,
+                        showTime ? timeRange[1][1] : 0
                     );
 
                     if (date >= minDate && date <= maxDate) {
