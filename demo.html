@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="ts.datetimepicker.css" rel="stylesheet"/>
+    <link href="datepicker.css" rel="stylesheet"/>
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="node_modules/ts.pointereventsnone/ts.pointereventsnone.js"></script>
+    <script type="text/javascript" src="ts.datetimepicker.js"></script>
+    <script type="text/javascript" src="datepicker.js"></script>
+    <style>
+        .modal {
+            display: block !important;
+            margin-top: 200px;
+        }
+    </style>
+</head>
+<body ng-controller="AppController">
+
+<button ng-click="openDateTimePicker(this, 'date')">DatePicker</button>
+<input type="text" ng-model="date" readonly/>
+<ts-datetime-picker ts-datetime-picker="dateTimePicker"></ts-datetime-picker>
+<button ng-click="toggleLanguage()">Toggle language {{dateTimePicker.language}}</button>
+
+<script>
+    angular.module("app", [
+        "ts.datetimePicker"
+    ]);
+    angular.module("app").controller('AppController', AppController);
+
+    function AppController($scope) {
+        $scope.date = new Date();
+
+        $scope.dateTimePicker = {
+            language: 'en',
+            show: false,
+            showTime: true,
+            scope: null,
+            date: null,
+            mode: 'picker', //scroll
+            timeRange: [[6, 0], [23, 0]],
+            minutesStep: 5,
+            onOutOfRange: function () {
+                console.log('out of range : ' + 6 + ':00 - ' + 23 + ':00');
+                this.show = false;
+            }
+        };
+
+        $scope.openDateTimePicker = function (scope, date) {
+            $scope.dateTimePicker.scope = scope;
+            $scope.dateTimePicker.date = date;
+            $scope.dateTimePicker.show = true;
+        };
+
+        $scope.toggleLanguage = function () {
+            if ($scope.dateTimePicker.language === 'en') {
+                $scope.dateTimePicker.language = 'ru';
+            } else {
+                $scope.dateTimePicker.language = 'en';
+            }
+        };
+    }
+
+    angular.bootstrap(document.body, ['app'], {});
+
+</script>
+
+</body>
+</html>

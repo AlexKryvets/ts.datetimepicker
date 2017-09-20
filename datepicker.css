@@ -1,0 +1,85 @@
+.datepicker .year {
+}
+.datepicker .year .dec,
+.datepicker .year .inc {
+  width: 30px;
+  height: 30px;
+}
+.datepicker .year label {
+  display: block;
+  text-align: center;
+}
+.datepicker .month {
+  line-height: 30px;
+}
+.datepicker .month .dec,
+.datepicker .month .inc {
+  opacity: .5;
+  outline: none;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 75% 75%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.datepicker .month .dec {
+  float: left;
+}
+.datepicker .month .inc {
+  float: right;
+}
+.datepicker .month .dec{
+
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAUklEQVR42u3VMQoAIBADQf8Pgj+OD9hG2CtONJB2ymQkKe0HbwAP0xucDiQWARITIDEBEnMgMQ8S8+AqBIl6kKgHiXqQqAeJepBo/z38J/U0uAHlaBkBl9I4GwAAAABJRU5ErkJggg==');
+}
+.datepicker .month .inc {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAU0lEQVR42u3VOwoAMAgE0dwfAnNjU26bYkBCFGwfiL9VVWoO+BJ4Gf3gtsEKKoFBNTCoCAYVwaAiGNQGMUHMkjGbgjk2mIONuXo0nC8XnCf1JXgArVIZAQh5TKYAAAAASUVORK5CYII=')
+}
+.datepicker .month .dec::before,
+.datepicker .month .inc::before {
+  display: block;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+}
+.datepicker .month label {
+  display: block;
+  text-align: center;
+}
+.datepicker .calendar {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 0;
+}
+.datepicker .calendar th,.datepicker .calendar td{
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.datepicker .month .dec:hover,
+.datepicker .month .inc:hover {
+  opacity: 1;
+}
+.datepicker .days-cell.selected,
+.datepicker .days-cell:hover {
+  background: #ddddde;
+}
+.datepicker .days-cell.off {
+  color: #909090;
+}
+div.timepicker{
+  font-size: 32px;
+}
+.timepicker select{
+  outline: none;
+  border: none;
+  font-size: 32px;
+  -webkit-appearance: none;
+}
