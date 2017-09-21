@@ -44,7 +44,16 @@
                     language: "en",
                     showTime: true,
                     mode: "scroll",
-                    timeRange: [[0, 0], [23, 59]],
+                    timeRange: {
+                        min : {
+                            hour: 0,
+                            minute: 0
+                        },
+                        max : {
+                            hour: 23,
+                            minute: 59
+                        }
+                    },
                     minutesStep: 5,
                     onOutOfRange: function () {
                         throw new RangeError('Date out of accepted range.');
@@ -82,15 +91,15 @@
                         $scope.year.value,
                         $scope.month.value,
                         $scope.day.value,
-                        showTime ? timeRange[0][0] : 0,
-                        showTime ? timeRange[0][1] : 0
+                        showTime ? timeRange.min.hour : 0,
+                        showTime ? timeRange.min.minute : 0
                     );
                     var maxDate = new Date(
                         $scope.year.value,
                         $scope.month.value,
                         $scope.day.value,
-                        showTime ? timeRange[1][0] : 0,
-                        showTime ? timeRange[1][1] : 0
+                        showTime ? timeRange.max.hour : 0,
+                        showTime ? timeRange.max.minute : 0
                     );
 
                     if (date >= minDate && date <= maxDate) {
@@ -402,21 +411,33 @@
         function DirectiveController($scope, $element, $timeout) {
             var timeRange = $scope.tsDatetimePicker.timeRange;
             var minutesStep = $scope.tsDatetimePicker.minutesStep;
+
+            function initRanges(){
+                $scope.hour.values = [];
+                $scope.minute.values = [];
+
+                timeRange = $scope.tsDatetimePicker.timeRange;
+
+                $scope.hour.element = $element.find(".dp-timepicker-hour");
+                range(timeRange.min.hour, timeRange.max.hour).forEach(function (element) {
+                    $scope.hour.values.push((element < 10) ? '0' + element : element);
+                });
+
+                $scope.minute.element = $element.find(".dp-timepicker-minute");
+                range(0, 59, minutesStep).forEach(function (element) {
+                    $scope.minute.values.push((element < 10) ? '0' + element : element);
+                });
+            }
+
             $scope.hour.values = [];
-            range(timeRange[0][0], timeRange[1][0]).forEach(function (element) {
-                $scope.hour.values.push((element < 10) ? '0' + element : element);
-            });
-
-            $scope.hour.element = $element.find(".dp-timepicker-hour");
-            bindScroll('hour', $scope);
-
             $scope.minute.values = [];
-            range(0, 59, minutesStep).forEach(function (element) {
-                $scope.minute.values.push((element < 10) ? '0' + element : element);
-            });
-
-            $scope.minute.element = $element.find(".dp-timepicker-minute");
+            initRanges();
+            bindScroll('hour', $scope);
             bindScroll('minute', $scope);
+
+            $scope.$watch('tsDatetimePicker.timeRange', function(){
+                initRanges();
+            });
 
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 if (newValue) {
