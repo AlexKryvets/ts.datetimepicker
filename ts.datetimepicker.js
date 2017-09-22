@@ -87,6 +87,7 @@
                     }
 
                     var timeRange = $scope.tsDatetimePicker.timeRange;
+
                     var minDate = new Date(
                         $scope.year.value,
                         $scope.month.value,
@@ -435,13 +436,11 @@
             bindScroll('hour', $scope);
             bindScroll('minute', $scope);
 
-            $scope.$watch('tsDatetimePicker.timeRange', function(){
-                initRanges();
-            });
-
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
+                initRanges();
+
                 if (newValue) {
-                    var rest = $scope.minute.value % minutesStep;
+                    var rest = $scope.minute.value % $scope.tsDatetimePicker.minutesStep;
                     $scope.minute.value += rest === 0 ? 0 : minutesStep - rest;
                 }
                 $scope.hour.value = $scope.hour.value < 10 ? '0' + $scope.hour.value : $scope.hour.value;
