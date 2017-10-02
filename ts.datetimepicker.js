@@ -28,9 +28,8 @@
         return translateFilter;
     }
 
-    angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
+    angular.module('ts.datetimePicker').directive('tsDatetimePicker', ['$parse', DatetimePickerController]);
 
-    DatetimePickerController.$inject = ['$parse'];
     function DatetimePickerController($parse) {
         return {
             restrict: 'E',
@@ -226,7 +225,7 @@
 
         var directive = {
             bindToController: false,
-            controller: DirectiveController,
+            controller: ['$scope', '$element', '$timeout', DirectiveController],
             replace: true,
             restrict: 'E',
             scope: false,
@@ -235,7 +234,6 @@
 
         return directive;
 
-        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
         function DirectiveController($scope, $element, $timeout) {
             $scope.day.values = [];
             $scope.day.$element = $element.find('.dp-column-day .dp-ul');
@@ -287,7 +285,7 @@
 
         var directive = {
             bindToController: false,
-            controller: DirectiveController,
+            controller: ['$scope', '$element', '$timeout', DirectiveController],
             replace: true,
             restrict: 'E',
             scope: false,
@@ -296,7 +294,6 @@
 
         return directive;
 
-        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
         function DirectiveController($scope, $element, $timeout) {
             $scope.hour.values = range(0, 23);
             $scope.hour.$element = $element.find('.dp-column-hour .dp-ul');
@@ -371,7 +368,7 @@
     function TimePickerDirective() {
         var directive = {
             bindToController: false,
-            controller: DirectiveController,
+            controller: ['$scope', '$element', '$timeout', DirectiveController],
             replace: true,
             restrict: 'E',
             scope: false,
@@ -408,7 +405,6 @@
 
         return directive;
 
-        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
         function DirectiveController($scope, $element, $timeout) {
             var timeRange = $scope.tsDatetimePicker.timeRange;
             var minutesStep = $scope.tsDatetimePicker.minutesStep;
@@ -436,15 +432,31 @@
             bindScroll('hour', $scope);
             bindScroll('minute', $scope);
 
+            $scope.$watch('tsDatetimePicker.timeRange', function(){
+                initRanges();
+            });
+
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 initRanges();
 
-                if (newValue) {
-                    var rest = $scope.minute.value % $scope.tsDatetimePicker.minutesStep;
-                    $scope.minute.value += rest === 0 ? 0 : minutesStep - rest;
-                }
                 $scope.hour.value = $scope.hour.value < 10 ? '0' + $scope.hour.value : $scope.hour.value;
+                var index_hour = $scope.hour.values.indexOf($scope.hour.value);
+                if(index_hour == -1){
+                    var prev_value = 0;
+                    if(timeRange.max.hour < parseInt($scope.hour.value)){
+                        $scope.hour.values.push($scope.hour.value);
+                    } else {
+                        $scope.hour.values.unshift($scope.hour.value);
+                    }
+                }
+
                 $scope.minute.value = $scope.minute.value  < 10 ? '0' + $scope.minute.value : $scope.minute.value;
+                var index_minute = $scope.minute.values.indexOf($scope.minute.value);
+                if(index_minute == -1){
+                    var prev_value = $scope.minute.value - $scope.minute.value % minutesStep;
+                    var prev_index = $scope.minute.values.indexOf(prev_value < 10 ? '0' + prev_value : prev_value) + 1;
+                    $scope.minute.values = Array.prototype.concat($scope.minute.values.slice(0,prev_index),[$scope.minute.value],$scope.minute.values.slice(prev_index));
+                }
             });
         }
     }
