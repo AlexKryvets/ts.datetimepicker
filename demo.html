@@ -32,7 +32,7 @@
     angular.module("app").controller('AppController', AppController);
 
     function AppController($scope) {
-        $scope.date = new Date();
+        $scope.date = new Date(2017, 1, 1, 12, 58);
 
         $scope.dateTimePicker = {
             language: 'en',
@@ -41,7 +41,16 @@
             scope: null,
             date: null,
             mode: 'picker', //scroll
-            timeRange: [[6, 0], [23, 0]],
+            timeRange: {
+                min : {
+                    hour: 10,
+                    minute: 0
+                },
+                max : {
+                    hour: 23,
+                    minute: 59
+                }
+            },
             minutesStep: 5,
             onOutOfRange: function () {
                 console.log('out of range : ' + 6 + ':00 - ' + 23 + ':00');

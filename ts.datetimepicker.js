@@ -174,7 +174,7 @@
         field.$element.on('click', 'div', function (e) {
             var value = parseInt($(this).data('value'));
             var coordinate = getCoordinateByValue(field.$element, value, step);
-            animate(field.$element, coordinate, Math.abs(field.value - value) * 0.1);
+            animate(field.$element, coordinate, Math.abs(field.value - value) / (step || 1) * 0.1);
             field.value = value;
             $scope.$apply();
         });
@@ -295,13 +295,19 @@
         return directive;
 
         function DirectiveController($scope, $element, $timeout) {
-            $scope.hour.values = range(0, 23);
+            var timeRange = $scope.tsDatetimePicker.timeRange;
+            var minutesStep = $scope.tsDatetimePicker.minutesStep;
+
+            $scope.hour.values = range(timeRange.min.hour, timeRange.max.hour);
             $scope.hour.$element = $element.find('.dp-column-hour .dp-ul');
 
-            $scope.minute.values = range(0, 59);
+            $scope.minute.values = range(0, 59, minutesStep);
             $scope.minute.$element = $element.find('.dp-column-minute .dp-ul');
 
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
+                var rest = $scope.minute.value % $scope.tsDatetimePicker.minutesStep;
+                var minuteValue = $scope.minute.value + (rest === 0 ? 0 : minutesStep - rest);
+                $scope.minute.value = (minuteValue !== 60) ? minuteValue : minuteValue - minutesStep;
                 if (newValue) {
                     $timeout(function () {
                         animate($scope.hour.$element, getCoordinateByValue($scope.hour.$element, $scope.hour.value));
@@ -431,10 +437,6 @@
             initRanges();
             bindScroll('hour', $scope);
             bindScroll('minute', $scope);
-
-            $scope.$watch('tsDatetimePicker.timeRange', function(){
-                initRanges();
-            });
 
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 initRanges();
