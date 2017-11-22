@@ -28,8 +28,9 @@
         return translateFilter;
     }
 
-    angular.module('ts.datetimePicker').directive('tsDatetimePicker', ['$parse', DatetimePickerController]);
+    angular.module('ts.datetimePicker').directive('tsDatetimePicker', DatetimePickerController);
 
+    DatetimePickerController.$inject = ['$parse'];
     function DatetimePickerController($parse) {
         return {
             restrict: 'E',
@@ -223,17 +224,7 @@
             return (new Date(year, month + 1, 0)).getDate();
         };
 
-        var directive = {
-            bindToController: false,
-            controller: ['$scope', '$element', '$timeout', DirectiveController],
-            replace: true,
-            restrict: 'E',
-            scope: false,
-            templateUrl: 'template/ts.datescroll.html'
-        };
-
-        return directive;
-
+        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
         function DirectiveController($scope, $element, $timeout) {
             $scope.day.values = [];
             $scope.day.$element = $element.find('.dp-column-day .dp-ul');
@@ -277,23 +268,24 @@
             bindEvents($scope, 'month');
             bindEvents($scope, 'day');
         }
+
+        var directive = {
+            bindToController: false,
+            controller: DirectiveController,
+            replace: true,
+            restrict: 'E',
+            scope: false,
+            templateUrl: 'template/ts.datescroll.html'
+        };
+
+        return directive;
     }
 
     angular.module('ts.datetimePicker').directive("timeScroll", TimeScrollDirective);
 
     function TimeScrollDirective() {
 
-        var directive = {
-            bindToController: false,
-            controller: ['$scope', '$element', '$timeout', DirectiveController],
-            replace: true,
-            restrict: 'E',
-            scope: false,
-            templateUrl: 'template/ts.timescroll.html'
-        };
-
-        return directive;
-
+        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
         function DirectiveController($scope, $element, $timeout) {
             var timeRange = $scope.tsDatetimePicker.timeRange;
             var minutesStep = $scope.tsDatetimePicker.minutesStep;
@@ -322,6 +314,17 @@
             bindEvents($scope, 'hour');
             bindEvents($scope, 'minute', $scope.tsDatetimePicker.minutesStep);
         }
+
+        var directive = {
+            bindToController: false,
+            controller: DirectiveController,
+            replace: true,
+            restrict: 'E',
+            scope: false,
+            templateUrl: 'template/ts.timescroll.html'
+        };
+
+        return directive;
     }
 
     /**
@@ -330,17 +333,6 @@
     angular.module('ts.datetimePicker').directive("datePicker", [DatePickerDirective]);
 
     function DatePickerDirective() {
-
-        var directive = {
-            bindToController: false,
-            controller: ['$scope', '$element', DirectiveController],
-            replace: true,
-            restrict: 'E',
-            scope: false,
-            template: '<div class="datepicker"></div>'
-        };
-
-        return directive;
 
         function DirectiveController($scope, $element) {
             var datePicker = new DatePicker($element[0], {
@@ -367,19 +359,22 @@
                 datePicker.destroy();
             });
         }
+
+        var directive = {
+            bindToController: false,
+            controller: ['$scope', '$element', DirectiveController],
+            replace: true,
+            restrict: 'E',
+            scope: false,
+            template: '<div class="datepicker"></div>'
+        };
+
+        return directive;
     }
 
     angular.module('ts.datetimePicker').directive("timePicker", [TimePickerDirective]);
 
     function TimePickerDirective() {
-        var directive = {
-            bindToController: false,
-            controller: ['$scope', '$element', '$timeout', DirectiveController],
-            replace: true,
-            restrict: 'E',
-            scope: false,
-            templateUrl: 'template/ts.timepicker.html'
-        };
 
         var bindScroll = function (elementName, $scope) {
             if ($scope[elementName].element && $scope[elementName].values) {
@@ -409,8 +404,7 @@
             }
         };
 
-        return directive;
-
+        DirectiveController.$inject = ['$scope', '$element', '$timeout'];
         function DirectiveController($scope, $element, $timeout) {
             var timeRange = $scope.tsDatetimePicker.timeRange;
             var minutesStep = $scope.tsDatetimePicker.minutesStep;
@@ -441,7 +435,8 @@
             $scope.$watch('tsDatetimePicker.show', function (newValue) {
                 initRanges();
 
-                $scope.hour.value = $scope.hour.value < 10 ? '0' + $scope.hour.value : $scope.hour.value;
+                $scope.hour.value = '' + $scope.hour.value;
+                $scope.hour.value = $scope.hour.value.length == 1 < 10 ? '0' + $scope.hour.value : $scope.hour.value;
                 var index_hour = $scope.hour.values.indexOf($scope.hour.value);
                 if(index_hour == -1){
                     var prev_value = 0;
@@ -452,7 +447,8 @@
                     }
                 }
 
-                $scope.minute.value = $scope.minute.value  < 10 ? '0' + $scope.minute.value : $scope.minute.value;
+                $scope.minute.value = '' + $scope.minute.value;
+                $scope.minute.value = $scope.minute.value.length == 1 ? '0' + $scope.minute.value : $scope.minute.value;
                 var index_minute = $scope.minute.values.indexOf($scope.minute.value);
                 if(index_minute == -1){
                     var prev_value = $scope.minute.value - $scope.minute.value % minutesStep;
@@ -461,6 +457,17 @@
                 }
             });
         }
+
+        var directive = {
+            bindToController: false,
+            controller: DirectiveController,
+            replace: true,
+            restrict: 'E',
+            scope: false,
+            templateUrl: 'template/ts.timepicker.html'
+        };
+
+        return directive;
     }
 
 })(window, window.angular);
