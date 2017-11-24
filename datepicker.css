@@ -83,3 +83,6 @@ div.timepicker{
   font-size: 32px;
   -webkit-appearance: none;
 }
+.timepicker span{
+  vertical-align: text-bottom;
+}
