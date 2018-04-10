@@ -37,7 +37,7 @@
             firstDay.setDate(1);
             index = (data.col + 1 + (data.row * DAYS_A_WEEK)) - firstDay.getDay();
             currentDay.setDate(index);
-            value = currentDay.getDate();
+            var value = currentDay.getDate();
 
             /* Setup class */
             if (currentDay.getTime() === this.selectedDate.getTime()) {
