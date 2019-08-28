@@ -1,11 +1,10 @@
 {
   "name": "@teamsoft/date-time-picker",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "ts.datetimepicker",
   "main": "ts.datetimepicker.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "make:patch": "unleash --patch"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -18,12 +17,10 @@
   },
   "homepage": "https://github.com/AlexKryvets/ts.datetimepicker#readme",
   "dependencies": {
-    "jquery": "1.9.1 - 3",
-    "bootstrap": "~3.3.*",
+    "@teamsoft/pointer-events-none": "*",
     "angular": "~1.5.*",
-    "@teamsoft/pointer-events-none": "*"
+    "bootstrap": "^3.4.1",
+    "jquery": "^3.4.1"
   },
-  "devDependencies": {
-    "unleash": "^2.0.1"
-  }
+  "devDependencies": {}
 }
