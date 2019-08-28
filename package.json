@@ -1,6 +1,6 @@
 {
   "name": "@teamsoft/date-time-picker",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "ts.datetimepicker",
   "main": "ts.datetimepicker.js",
   "scripts": {
