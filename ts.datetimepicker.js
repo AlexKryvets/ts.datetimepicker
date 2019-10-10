@@ -22,7 +22,7 @@
     TranslateFilterFactory.$inject = [];
     function TranslateFilterFactory() {
         var translateFilter = function (translationId, language) {
-            return translates.hasOwnProperty(language) ? translates[language || 'en'][translationId] : translates['en'];
+            return translates.hasOwnProperty(language) ? translates[language || 'en'][translationId] : translates['en'][translationId];
         };
         translateFilter.$stateful = true;
         return translateFilter;
