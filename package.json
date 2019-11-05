@@ -18,7 +18,7 @@
   "homepage": "https://github.com/AlexKryvets/ts.datetimepicker#readme",
   "dependencies": {
     "@teamsoft/pointer-events-none": "*",
-    "angular": "~1.5.*",
+    "angular": "~1.6.*",
     "bootstrap": "^3.4.1",
     "jquery": "^3.4.1"
   },
