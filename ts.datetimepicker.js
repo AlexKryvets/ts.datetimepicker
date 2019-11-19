@@ -8,6 +8,11 @@
             "Date" : "Date",
             "Cancel" : "Cancel"
         },
+        "uk": {
+            "Date and time" : "Дата і час",
+            "Date" : "Дата",
+            "Cancel" : "Скасувати"
+        },
         "ru": {
             "Date and time" : "Дата и время",
             "Date" : "Дата",
