@@ -132,8 +132,9 @@
      * DateScroll & TimeScroll Directives
      */
     var HEIGHT = 40;
-    var minYear = 2000;
-    var maxYear = 2020;
+    const currentYear = new Date().getFullYear();
+    var minYear = currentYear - 10
+    var maxYear = currentYear + 1
 
     var range = function (start, end, step) {
         var array = [];
