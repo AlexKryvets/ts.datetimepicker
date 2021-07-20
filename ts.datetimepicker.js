@@ -133,8 +133,8 @@
      */
     var HEIGHT = 40;
     const currentYear = new Date().getFullYear();
-    var minYear = currentYear - 10
-    var maxYear = currentYear + 1
+    var minYear = currentYear - 20
+    var maxYear = currentYear + 10
 
     var range = function (start, end, step) {
         var array = [];
