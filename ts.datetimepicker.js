@@ -42,7 +42,7 @@
             scope: {
                 tsDatetimePicker: '='
             },
-            templateUrl: 'template/ts.datetimepicker.html',
+            template: require('./template/ts.datetimepicker.html'),
             link: function ($scope) {
                 var date = null;
                 $scope.tsDatetimePicker = angular.extend({
@@ -280,7 +280,7 @@
             replace: true,
             restrict: 'E',
             scope: false,
-            templateUrl: 'template/ts.datescroll.html'
+            template: require('./template/ts.datescroll.html')
         };
 
         return directive;
@@ -326,7 +326,7 @@
             replace: true,
             restrict: 'E',
             scope: false,
-            templateUrl: 'template/ts.timescroll.html'
+            template: require('./template/ts.timescroll.html')
         };
 
         return directive;
@@ -469,7 +469,7 @@
             replace: true,
             restrict: 'E',
             scope: false,
-            templateUrl: 'template/ts.timepicker.html'
+            template: require('./template/ts.timepicker.html')
         };
 
         return directive;
